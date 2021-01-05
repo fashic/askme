@@ -108,6 +108,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.10-x86-mingw32)
       mini_portile2 (~> 2.4.0)
+    prettier (1.2.2)
     puma (5.1.1)
       nio4r (~> 2.0)
     puma (5.1.1-java)
@@ -210,6 +211,7 @@ DEPENDENCIES
   byebug
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  prettier
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.0)

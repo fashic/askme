@@ -1,21 +1,59 @@
+# Эта библиотека понадобится нам для шифрования.
 require 'openssl'
 
-class User < ApplicationRecord
-  #параметры работы модуля шифрования паролей
+# Модель пользователя.
+#
+# Каждый экземпляр этого класса — загруженная из БД инфа о конкретном юзере.
+class User < ActiveRecord::Base
+  # Параметры работы для модуля шифрования паролей
   ITERATIONS = 20_000
   DIGEST = OpenSSL::Digest::SHA256.new
 
+  # Виртуальное поле, которое не сохраняется в базу. Из него перед сохранением
+  # читается пароль, и сохраняется в базу уже зашифрованная версия пароля в
+  # реальные поля password_salt и password_hash.
   attr_accessor :password
 
-  has_many :questions
+  # Эта команда добавляет связь с моделью Question на уровне объектов она же
+  # добавляет метод .questions к данному объекту.
+  #
+  # Вспоминайте уроки про рельционные БД и связи между таблицами.
+  #
+  # Когда мы вызываем метод questions у экземпляра класса User, рельсы
+  # поймут это как просьбу найти в базе все объекты класса Questions со
+  # значением user_id равный user.id.
+  has_many :questions, dependent: :destroy
 
-  validates  :email, :username, presence: true
-  validates  :email, :username, uniqueness: true
+  # Валидация, которая проверяет, что поля email и username не пустые и не равны
+  # nil. Если не задан email и username, объект не будет сохранен в базу.
+  validates :email, :username, presence: true
 
+  # Валидация, которая проверяет уникальность полей email и username. Если в
+  # базе данных уже есть записи с такими email и/или username, объект не будет
+  # сохранен в базу.
+  validates :email, :username, uniqueness: true
 
+  # Влидация поверяющая правильный формат email
+  validates :email, format: { with: /\A[\w\d]+@[\w\d]+\.\w+/,
+    message: "Not valid email"}
+
+  # Валидация ограничивающая длину имени пользователя
+  validates :username, length: { maximum: 40 }
+  validates :username, format: { with: /\A[\w]+\z/, message: "User name should only contain: 'a-Z, 1-9 and _"}
+
+  # Поле password нужно только при создании (create) нового юзера — регистрации.
+  # При аутентификации (логине) мы будем сравнивать уже зашифрованные поля.
   validates :password, presence: true, on: :create
+
+  # Валидация, которая проверяет совпадения значений полей password и
+  # password_confirmation. Понадобится при создании формы регистрации, чтобы
+  # снизить число ошибочно введенных паролей.
   validates_confirmation_of :password
 
+  # Ошибки валидаций можно посмотреть методом errors.
+
+  # Перед сохранением объекта в базу, создаем зашифрованный пароль, который
+  # будет хранится в БД.
   before_save :encrypt_password
 
   # Шифруем пароль, если он задан
@@ -38,7 +76,8 @@ class User < ApplicationRecord
     end
   end
 
-  #служебный метод, преобразующий бинарную строку в 16-ричный формат, для удобства хранения
+  # Служебный метод, преобразующий бинарную строку в 16-ричный формат,
+  # для удобства хранения.
   def self.hash_to_string(password_hash)
     password_hash.unpack('H*')[0]
   end
