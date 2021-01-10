@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   # реальные поля password_salt и password_hash.
   attr_accessor :password
 
+  #Регестрирует  коллбек перед валидацией
+  before_validation :downcase_username, on: :create
+
   # Эта команда добавляет связь с моделью Question на уровне объектов она же
   # добавляет метод .questions к данному объекту.
   #
@@ -34,12 +37,13 @@ class User < ActiveRecord::Base
   validates :email, :username, uniqueness: true
 
   # Влидация поверяющая правильный формат email
-  validates :email, format: { with: /\A[\w\d]+@[\w\d]+\.\w+/,
+  validates :email, format: { with: /\A[\wа-яёА-ЯЁ]+@[\wа-яёА-ЯЁ]+\.\w+\z/,
     message: "Not valid email"}
 
   # Валидация ограничивающая длину имени пользователя
   validates :username, length: { maximum: 40 }
-  validates :username, format: { with: /\A[\w]+\z/, message: "User name should only contain: 'a-Z, 1-9 and _"}
+  # Валидация проверяющая правильность ввода данных присоздании имени польвателя
+  validates :username, format: { with: /\A\w+\z/, message: "User name should only contain: 'a-Z, 1-9 and _"}
 
   # Поле password нужно только при создании (create) нового юзера — регистрации.
   # При аутентификации (логине) мы будем сравнивать уже зашифрованные поля.
@@ -107,4 +111,10 @@ class User < ActiveRecord::Base
     # Иначе, возвращаем nil
     nil
   end
+
+  # Метод переводащий username в нижний регистр
+  private
+    def downcase_username
+      self.username = username.downcase
+    end
 end
