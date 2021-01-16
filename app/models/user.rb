@@ -36,8 +36,7 @@ class User < ApplicationRecord
   validates :email, :username, uniqueness: true
 
   # Влидация поверяющая правильный формат email
-  validates :email, format: { with: /\A[\wа-яёА-ЯЁ]+@[\wа-яёА-ЯЁ]+\.\w+\z/,
-    message: "Not valid email"}
+  validates :email, format: { with: /\A.+@.+\..+\z/}
 
   # Валидация ограничивающая длину имени пользователя
   validates :username, length: { maximum: 40 }

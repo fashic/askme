@@ -12,8 +12,8 @@ class Question < ApplicationRecord
   # Эта валидация препятствует созданию вопросов, у которых нет пользователя
   # если задан пустой текст вопроса (поле text пустое), объект не будет сохранен
   # в базу.
-  validates :user, :text, presence: true
+  validates  :text, presence: true
 
   # Ошибки валидаций можно посмотреть методом errors.
-  # validates :text, length: { maximum: 255 }
+  validates :text, length: { maximum: 255 }
 end
