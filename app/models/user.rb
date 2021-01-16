@@ -4,7 +4,7 @@ require 'openssl'
 # Модель пользователя.
 #
 # Каждый экземпляр этого класса — загруженная из БД инфа о конкретном юзере.
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Параметры работы для модуля шифрования паролей
   ITERATIONS = 20_000
   DIGEST = OpenSSL::Digest::SHA256.new
@@ -14,8 +14,7 @@ class User < ActiveRecord::Base
   # реальные поля password_salt и password_hash.
   attr_accessor :password
 
-  #Регестрирует  коллбек перед валидацией
-  before_validation :downcase_username, on: :create
+
 
   # Эта команда добавляет связь с моделью Question на уровне объектов она же
   # добавляет метод .questions к данному объекту.
@@ -59,6 +58,9 @@ class User < ActiveRecord::Base
   # Перед сохранением объекта в базу, создаем зашифрованный пароль, который
   # будет хранится в БД.
   before_save :encrypt_password
+
+  #Регестрирует  коллбек перед валидацией
+  before_validation :downcase_username
 
   # Шифруем пароль, если он задан
   def encrypt_password
