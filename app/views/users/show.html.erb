@@ -1,8 +1,14 @@
+
+
 <div class="user-header text-center">
   <h1 class="title-medium">
     <%# Выводим имя пользователя %>
     <%= @user.name %>
   </h1>
+
+  <div class="buffer-both">
+  <%= link_to 'Редактировать профиль', edit_user_path(@user)  %>
+</div>
 
   <div class="user-image-div">
     <%# Рисуем аватарку пользователя %>
@@ -56,7 +62,7 @@
 
 <div class="column-3-4">
   <div class="user-questions questions-count">
-    <p>Вам задано <%= declination(@questions.length, "Вопрос", "Вопроса", "Вопросов")%>:</p>
+    <p>Вам задано <%= t('question', :count => @questions.length) %>:</p>
     <div>
       <%= @questions.length%>
     </div>

@@ -61,26 +61,6 @@ class User < ApplicationRecord
   #Регестрирует  коллбек перед валидацией
   before_validation :downcase_username
 
-  # Шифруем пароль, если он задан
-  def encrypt_password
-    if password.present?
-      # Создаем т. н. «соль» — рандомная строка усложняющая задачу хакерам по
-      # взлому пароля, даже если у них окажется наша база данных.
-      self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
-
-      # Создаем хэш пароля — длинная уникальная строка, из которой невозможно
-      # восстановить исходный пароль. Однако, если правильный пароль у нас есть,
-      # мы легко можем получить такую же строку и сравнить её с той, что в базе.
-      self.password_hash = User.hash_to_string(
-        OpenSSL::PKCS5.pbkdf2_hmac(
-          password, password_salt, ITERATIONS, DIGEST.length, DIGEST
-        )
-      )
-
-      # Оба поля окажутся записанными в базу при сохранении (save).
-    end
-  end
-
   # Служебный метод, преобразующий бинарную строку в 16-ричный формат,
   # для удобства хранения.
   def self.hash_to_string(password_hash)
@@ -114,7 +94,26 @@ class User < ApplicationRecord
   end
 
   # Метод переводащий username в нижний регистр
-  private
+    private  # Шифруем пароль, если он задан
+  def encrypt_password
+    if password.present?
+      # Создаем т. н. «соль» — рандомная строка усложняющая задачу хакерам по
+      # взлому пароля, даже если у них окажется наша база данных.
+      self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
+
+      # Создаем хэш пароля — длинная уникальная строка, из которой невозможно
+      # восстановить исходный пароль. Однако, если правильный пароль у нас есть,
+      # мы легко можем получить такую же строку и сравнить её с той, что в базе.
+      self.password_hash = User.hash_to_string(
+        OpenSSL::PKCS5.pbkdf2_hmac(
+          password, password_salt, ITERATIONS, DIGEST.length, DIGEST
+        )
+      )
+
+      # Оба поля окажутся записанными в базу при сохранении (save).
+    end
+  end
+
     def downcase_username
       self.username = username.downcase
     end

@@ -10,6 +10,10 @@ module ApplicationHelper
     end
   end
 
+  def fa_icon(icon_class)
+    content_tag 'span', '', class: "fa fa-#{icon_class}"
+  end
+
   # Этот метод позволяет использовать правильное склонение слова
   def declination(number, word1, word2, word3)
     last_one_number = (number % 10) 
