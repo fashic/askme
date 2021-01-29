@@ -14,8 +14,6 @@ class User < ApplicationRecord
   # реальные поля password_salt и password_hash.
   attr_accessor :password
 
-
-
   # Эта команда добавляет связь с моделью Question на уровне объектов она же
   # добавляет метод .questions к данному объекту.
   #
@@ -36,12 +34,17 @@ class User < ApplicationRecord
   validates :email, :username, uniqueness: true
 
   # Влидация поверяющая правильный формат email
-  validates :email, format: { with: /\A.+@.+\..+\z/}
+  validates :email, format: { with: /\A.+@.+\..+\z/ }
 
   # Валидация ограничивающая длину имени пользователя
   validates :username, length: { maximum: 40 }
+
   # Валидация проверяющая правильность ввода данных присоздании имени польвателя
-  validates :username, format: { with: /\A\w+\z/, message: "User name should only contain: 'a-Z, 1-9 and _"}
+  validates :username,
+            format: {
+              with: /\A\w+\z/,
+              message: "User name should only contain: 'a-Z, 1-9 and _"
+            }
 
   # Поле password нужно только при создании (create) нового юзера — регистрации.
   # При аутентификации (логине) мы будем сравнивать уже зашифрованные поля.
@@ -78,11 +81,16 @@ class User < ApplicationRecord
     return nil unless user.present?
 
     # Формируем хэш пароля из того, что передали в метод
-    hashed_password = User.hash_to_string(
-      OpenSSL::PKCS5.pbkdf2_hmac(
-        password, user.password_salt, ITERATIONS, DIGEST.length, DIGEST
+    hashed_password =
+      User.hash_to_string(
+        OpenSSL::PKCS5.pbkdf2_hmac(
+          password,
+          user.password_salt,
+          ITERATIONS,
+          DIGEST.length,
+          DIGEST
+        )
       )
-    )
 
     # Обратите внимание: сравнивается password_hash, а оригинальный пароль так
     # никогда и не сохраняется нигде. Если пароли совпали, возвращаем
@@ -94,7 +102,7 @@ class User < ApplicationRecord
   end
 
   # Метод переводащий username в нижний регистр
-    private  # Шифруем пароль, если он задан
+  private # Шифруем пароль, если он задан
   def encrypt_password
     if password.present?
       # Создаем т. н. «соль» — рандомная строка усложняющая задачу хакерам по
@@ -104,17 +112,22 @@ class User < ApplicationRecord
       # Создаем хэш пароля — длинная уникальная строка, из которой невозможно
       # восстановить исходный пароль. Однако, если правильный пароль у нас есть,
       # мы легко можем получить такую же строку и сравнить её с той, что в базе.
-      self.password_hash = User.hash_to_string(
-        OpenSSL::PKCS5.pbkdf2_hmac(
-          password, password_salt, ITERATIONS, DIGEST.length, DIGEST
+      self.password_hash =
+        User.hash_to_string(
+          OpenSSL::PKCS5.pbkdf2_hmac(
+            password,
+            password_salt,
+            ITERATIONS,
+            DIGEST.length,
+            DIGEST
+          )
         )
-      )
 
       # Оба поля окажутся записанными в базу при сохранении (save).
     end
   end
 
-    def downcase_username
-      self.username = username.downcase
-    end
+  def downcase_username
+    self.username = username.downcase
+  end
 end

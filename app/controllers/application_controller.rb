@@ -1,5 +1,5 @@
-class ApplicationController < ActionController::Base; 
-# Prevent CSRF attacks by raising an exception.
+class ApplicationController < ActionController::Base
+  # Prevent CSRF attacks by raising an exception.
   #
   # Эта строчка вызывает метод, который обеспечивает защиту от поддельных форм
   # в каждой форме есть специальный уникальный токен, который rails-приложение

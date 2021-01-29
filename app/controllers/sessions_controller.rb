@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
   # Пустой экшен, только показывает свой шаблон
-  def new
-  end
+  def new; end
 
   # Создает в объекте session новый факт залогиненности пользователя, если он
   # правильно сообщил мэйл/пароль

@@ -8,7 +8,7 @@
 #
 class QuestionsController < ApplicationController
   # Инициализируем объект вопрос для экшенов кроме :edit, :update, :destroy
-  before_action :load_question, only: [:edit, :update, :destroy]
+  before_action :load_question, only: %i[edit update destroy]
 
   # Проверяем имеет ли юзер доступ к экшену для всей дествий, кроме задавания
   # вопроса, это действие может вызвать даже неавторизованный пользователь.
@@ -19,8 +19,7 @@ class QuestionsController < ApplicationController
   #
   # Перед этим действием сработает before_action :load_questions и в переменной
   # @question у нас будет лежать вопрос с нужным id равным params[:id].
-  def edit
-  end
+  def edit; end
 
   # Действие create будет отзываться при POST-запросе по адресу /questions из
   # формы нового вопроса, которая находится в шаблоне на странице
@@ -86,7 +85,7 @@ class QuestionsController < ApplicationController
     # Защита от уязвимости: если текущий пользователь — адресат вопроса,
     # он может менять ответы на вопрос, ему доступно также поле :answer.
     if current_user.present? &&
-       params[:question][:user_id].to_i == current_user.id
+         params[:question][:user_id].to_i == current_user.id
       params.require(:question).permit(:user_id, :text, :answer)
     else
       params.require(:question).permit(:user_id, :text)

@@ -8,12 +8,12 @@
 #
 class UsersController < ApplicationController
   # Загружаем юзера из базы для экшенов кроме :index, :create, :new
-  before_action :load_user, except: [:index, :create, :new]
+  before_action :load_user, except: %i[index create new]
 
   # Проверяем имеет ли юзер доступ к экшену, делаем это для всех действий, кроме
   # :index, :new, :create, :show — к этим действиям есть доступ у всех, даже у
   # тех, у кого вообще нет аккаунта на нашем сайте.
-  before_action :authorize_user, except: [:index, :new, :create, :show]
+  before_action :authorize_user, except: %i[index new create show]
 
   def index
     @users = User.all
@@ -59,8 +59,7 @@ class UsersController < ApplicationController
   #
   # Перед этим действием сработает before_action :load_user и в переменной @user
   # у нас будет лежать пользовать с нужным id равным params[:id].
-  def edit
-  end
+  def edit; end
 
   # Действие update будет отзываться при PUT-запросе из формы редактирования
   # пользователя, которая находится по адресу /users/:id, например,
@@ -120,7 +119,15 @@ class UsersController < ApplicationController
   # ключами: :email, :password, :password_confirmation, :name, :username и
   # :avatar_url. Другие ключи будут отброшены.
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation,
-                                 :name, :username, :avatar_url)
+    params
+      .require(:user)
+      .permit(
+        :email,
+        :password,
+        :password_confirmation,
+        :name,
+        :username,
+        :avatar_url
+      )
   end
 end

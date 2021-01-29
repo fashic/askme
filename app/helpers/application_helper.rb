@@ -16,10 +16,10 @@ module ApplicationHelper
 
   # Этот метод позволяет использовать правильное склонение слова
   def declination(number, word1, word2, word3)
-    last_one_number = (number % 10) 
+    last_one_number = (number % 10)
     return word3 if (10..14).include?(number % 100)
     return word1 if last_one_number == 1
     return word2 if last_one_number.between?(2, 4)
-    return word3 
+    return word3
   end
 end
