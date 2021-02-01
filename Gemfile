@@ -56,7 +56,7 @@ group :development do
   gem 'spring'
 
   # Use sqlite3 as the database for Active Record
-  # gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', '~> 1.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
