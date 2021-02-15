@@ -17,9 +17,9 @@
     <% end %>
 
     <%# Дата создания вопроса (отформатированная) %>
-    <%# <div class="question-date"> %>
-      <%# <%= l(question.created_at, format: :short) %>
-    <%# </div> %>
+    <div class="question-date">
+      <%= l(question.created_at, format: :short) %>
+    </div>
   </div>
 
   <%# Если адресат вопроса — текущий пользователь, он может редактировать вопрос %>
