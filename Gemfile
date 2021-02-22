@@ -30,6 +30,8 @@ gem 'jquery-rails'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'rails-i18n', '~> 6.0.0'
+
 # В продакшне (на хероку) мы используем БД postrgres, 
 # поэтому нам нужен гем pg
 group :production do
