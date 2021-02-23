@@ -54,6 +54,10 @@
       </div>
     <% end %>
 
+    <div>
+      <%= link_to "delete", current_user, method: :delete, data: { confirm: "You sure?" } %>
+    </div>
+
     <%# Подробнее про помощники для создания форм: %>
     <%# http://guides.rubyonrails.org/form_helpers.html %>
   </div>
