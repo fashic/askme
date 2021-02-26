@@ -49,14 +49,21 @@
         <%= f.password_field :password_confirmation, class: 'form-text-field' %>
       </div>
 
-      <div class="form-action buffer-top">
-        <%= f.submit 'Сохранить', class: 'button button-dark button-small' %>
+      <div class="button-wrap">
+        <div class="form-action buffer-top">
+          <%= f.submit 'Сохранить', class: 'button button-dark button-small' %>
+        </div>
+
+        <button class="btn btn-danger">
+          <%= link_to "delete", current_user, method: :delete, data: { confirm: "Вы действительно хотите удалить свой аккаунт?" } %>
+        </button>
       </div>
     <% end %>
 
-    <div>
-      <%= link_to "delete", current_user, method: :delete, data: { confirm: "You sure?" } %>
-    </div>
+    
+
+
+
 
     <%# Подробнее про помощники для создания форм: %>
     <%# http://guides.rubyonrails.org/form_helpers.html %>
