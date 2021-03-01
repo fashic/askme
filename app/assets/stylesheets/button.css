@@ -14,6 +14,11 @@
   color: #fff;
 }
 
+.button-red {
+  background: red;
+  color:black;
+}
+
 .button-green {
   background: #005a55;
   color: #fff;
@@ -28,4 +33,9 @@
   font-size: 15px;
   line-height: 15px;
   padding: 7px 15px;
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: space-between;
 }
