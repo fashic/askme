@@ -43,6 +43,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry', '~> 0.14.0'
   gem 'prettier'
+  gem 'ffaker'
 end
 
 group :development do
