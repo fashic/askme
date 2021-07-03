@@ -7,9 +7,10 @@ class Question < ApplicationRecord
   # Когда мы вызываем метод user у экземпляра класса Question, рельсы
   # поймут это как просьбу найти в базе объект класса User со значением id
   # равный question.user_id.
+  has_many :hastag_questions, dependent: :destroy
+  has_many :hashtags, through: :hastag_questions
   belongs_to :user
-
-  belongs_to :author, class_name: 'User'
+  belongs_to :author, class_name: 'User', optional: true
   # Эта валидация препятствует созданию вопросов, у которых нет пользователя
   # если задан пустой текст вопроса (поле text пустое), объект не будет сохранен
   # в базу.
