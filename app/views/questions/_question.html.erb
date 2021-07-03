@@ -20,6 +20,14 @@
     <div class="question-date">
       <%= l(question.created_at, format: :short) %>
     </div>
+
+    <div>
+      <% if @user.id =  question.author_id %>
+        <%= link_to "@#{@author_name}", user_path(current_user) %>  
+      <% else %>
+        <p>Вопрос от незарегестрированного пользователя</p>
+      <% end %>
+    </div>
   </div>
 
   <%# Если адресат вопроса — текущий пользователь, он может редактировать вопрос %>
