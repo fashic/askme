@@ -18,4 +18,17 @@ class Question < ApplicationRecord
 
   # Ошибки валидаций можно посмотреть методом errors.
   validates :text, length: { maximum: 255 }
+
+  after_save_commit :create_hashtags
+  
+  private
+
+  def create_hashtags
+    self.hashtags =
+      "#{text} #{answer}".
+      downcase.
+      scan(Hashtag::REGEXP).
+      uniq.
+      map { |ht| Hashtag.find_or_create_by(text: ht.delete('#')) }
+  end
 end
