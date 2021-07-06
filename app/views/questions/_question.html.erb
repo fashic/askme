@@ -22,8 +22,8 @@
     </div>
 
     <div>
-      <% if @user.id =  question.author_id %>
-        <%= link_to "@#{@author_name}", user_path(current_user) %>  
+      <% if question.author.present? %>
+        автор <%= link_to "@#{question.author.username}", user_path(question.author) %>
       <% else %>
         <p>Вопрос от незарегестрированного пользователя</p>
       <% end %>
