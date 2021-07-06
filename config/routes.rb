@@ -11,7 +11,8 @@ Rails
 
     # Ресурс вопросов (кроме экшенов :show, :new, :index)
     resources :questions, except: %i[show new index]
-
+  
+    resources :hashtags, only: :show, param: :text
     # Синонимы путей — в дополнение к созданным в ресурсах выше.
     #
     # Для любознательных: синонимы мы добавили, чтобы показать одну вещь и потом
