@@ -6,7 +6,7 @@
   <div class="question-content">
     <%# Текст вопроса %>
     <div class="question-text text-lead">
-      <%= question.text %>
+      <%= text_with_hashtag_link(question.text) %>
     </div>
 
     <%# Текст ответа, если он есть %>
